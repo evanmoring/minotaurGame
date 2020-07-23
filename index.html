@@ -1,0 +1,75 @@
+<script src="random.js"></script>
+<script src="minotaur.js"></script>
+<script src="path.js"></script>
+<script src="game.js"></script>
+
+<style>
+    body{
+        font-family: helvetica;
+        background: #ccc;
+        padding: 50px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 16px;
+        color: #222;
+
+    }
+    #description{
+        opacity: 0;
+
+
+    }
+    .fade {
+        opacity:0;
+    }
+    p{
+        opacity:1;
+    }
+    
+    body * {
+                        /*  -webkit-transition: opacity 1s ease-in;
+       -moz-transition: opacity s ease-in;
+        -ms-transition: opacity 1s ease-in;
+         -o-transition: opacity 1s ease-in;
+            transition: opacity 1s ease-in;
+        margin: 10px;*/
+    }
+    br{
+        width:100%;
+        margin:10px;
+        height:10px;
+    }
+    input {
+        background-color: #ccc;
+        padding: 5px;
+        border: none;
+        font-size: 16px;
+        color: #222;
+        text-decoration: underline;
+     
+        
+    }
+
+    #mastergrid *{
+        margin: 0px;
+        font-family: monospace;
+        /*display: none;*/
+    }
+    #controls {
+        display:none;
+    }
+</style>
+<body onload=''>
+    <div id = "seedChoice">
+        Choose a 4 digit seed value. If you generate the maze twice using the same value, the maze will be identical
+    <input style="border:10px solid" id="seed" type = "text" placeholder="Enter 4 digit seed number" value = 1234>
+    <input style="border:10px solid" id="seed" type = "button" value="Choose seed" onclick="chooseSeed(parseInt(document.getElementById('seed').value))">
+        </div>
+    <div id ="text">
+    <div id = "distance"></div>
+    <div id ="description"></div>
+    <div id = "redThread"></div>
+    <div id="direction"></div>
+    <div id="controls"><input value='LEFT' type = "button" id='the left'><input value='RIGHT' type = "button"  id='the right'><input value='FORWARD' type = "button"  id='ahead'><input value='BACK' type = "button"  id='behind'><input value='ASCEND' type = "button"  id='ascend' onclick = 'ascendTwo()'><input value='GO BACK' type = "button"  id='goback' onclick='ascendGoBack()'></div></div>
+<div id="masterGrid"></div>
+    </body>
