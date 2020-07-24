@@ -5,8 +5,9 @@ var mCurrent = mStart;
 var currentFacing;
 var closerNode;
 var endCheck = false;
-const debug = true;
-var fadeModifier = 1
+const debug = false;
+var fadeModifier = 1;
+var playCount = 0;
 if (debug){
      fadeModifier= 0;
 }
@@ -117,15 +118,42 @@ class character {
 }
 Theseus = new character(tStart,'T')
 Minotaur = new character(mStart,'M')
-currentCharacter = Minotaur;
-opposingCharacter = Theseus;
+    if (playCount==0){
+        currentCharacter = Minotaur;
+        opposingCharacter = Theseus;
+        console.log('firstPlay');
+    }
+    else{
+    
+        if (playCount%2==1){
+            console.log('currentCharacter is now Theseus')
+            
+            currentCharacter = Theseus;
+            opposingCharacter = Minotaur;
+            foundExit = true;
+        }
+        else{
+            console.log('currentCharacter is now Minotaur')
+            currentCharacter = Minotaur;
+            opposingCharacter = Theseus;
+            foundExit = false;
+        }
+    }
+    
+
+    playCount ++
+    if(debug){
+        document.getElementById('debugDiv').style.display = 'block';
+    document.getElementById('debugDiv').innerHTML = `<p>Seed: ${seed.value}</p><p>Current Character: ${currentCharacter.indicator}</p>`
+    }
+
     gameStart()
 
 function gameStart (){
     Theseus.initialize();
     Minotaur.initialize();  
     if(debug == false){
-    setTimeout(function(){ introduction(); }, 1000*fadeModifier);}
+    setTimeout(function(){ introduction(); }, 500*fadeModifier);}
     //displayOptions(currentCharacter.location) 
     else{
         displayFirstOptions();
@@ -133,20 +161,11 @@ function gameStart (){
 }
 
 function introduction () {
-    document.getElementById('description').innerHTML = "<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the Minotaur, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demaned as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>Theseus, the son of the ruler of one of the neighboring kingdoms, decided enough was enough. He offered himself as tribute and sailed to Crete. </p><p class = 'fade' id='4'>You take the role of the prince in the Labyrinth. Travel the winding corridors until the inevitable confrontation with your foe.<br><input type='button' value = 'CONTINUE' onclick='displayFirstOptions(currentCharacter.location)'></p>"
+    document.getElementById('description').innerHTML = "<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the MINOTAUR, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demanded as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>THESEUS, the son of the ruler of Athens, decides enough is enough. He offers himself as tribute and sails to Crete. As he leaves, he promises his father that should he succeed he will fly a white flag from his ship's mast.  </p><p class = 'fade' id='4'>You take the role of the prince in the Labyrinth. Travel the winding corridors until the inevitable confrontation with your foe.<br><input type='button' value = 'CONTINUE' onclick='displayFirstOptions(currentCharacter.location)'></p>"
     document.getElementById("description").style.opacity=1;
     revealIntro(1,4)
 }
-function revealIntro(i,b){
-    document.getElementById(i).style.opacity=1;
-    i+=1
-    if (i>b){
-        return
-    }
-    else{
-        setTimeout(function(){ revealIntro(i,b); }, 2000*fadeModifier);
-    }
-}
+
 }
 
 function checkDirection(origin,destination){
@@ -192,17 +211,22 @@ function end (){
     if(!debug){
     endCheck = true;
     console.log('end')
-
+        document.getElementById('inventory').style.display = 'none'
     document.getElementById('redThread').innerHTML = ''
-    document.getElementById('controls').innerHTML = ''
-    document.getElementById('direction').innerHTML = ''
+    document.getElementById('controls').style.display = 'none'
+    document.getElementById('direction').innerHTML= ''
     document.getElementById('distance').innerHTML = ''
     document.getElementById('description').innerHTML = ''
     document.getElementById('description').style.opacity = 0;
     document.getElementById('text').style.opacity=1;
     setTimeout(function(){
-        document.getElementById('description').style.opacity = 1; 
+        document.getElementById('description').style.opacity = 1;
+        if (currentCharacter == Minotaur){
         document.getElementById('description').innerHTML = "<p class = 'fade' id =1>You finally meet your foe. He is about 6' tall: half your height. Unlike those you meet in the Labyrinth he is armed with a short bronze sword.</p><p class = 'fade' id =2>He leaps at you with the ferocity of a beast. His sword is sharp. You have never faced anyone with a weapon before. He hacks you down where you stand.</p><p class = 'fade' id =3> You were the first and last Minotaur. There will never be another <br><input type='button' value = 'CONTINUE' onclick='end2()'></p>"
+        }
+        if (currentCharacter == Theseus){
+        document.getElementById('description').innerHTML = "<p class = 'fade' id =1>You finally meet your foe. He is a big ugly brute. You hack him down with a few swipes of your sword.You escape Crete with your lover, the Minotaur's sister, Ariadne. You brag to her that the Minotaur barely defended himself.</p><p class = 'fade' id =2>On the journey home to Athens you tire of Ariadne. You stop on the island Naxos and abandon her.</p><p class = 'fade' id =3>When you return home you forget to change out your sails to white to signal your success. In his grief your father dashes himself to death on the rocks below the city. You are remembered as a hero for thousands of years.   <br><input type='button' value = 'CONTINUE' onclick='end2()'></p>"
+        }
         revealIntro(1,3)
         //document.getElementById('text').style.opacity = 1;
         //document.getElementById('controls').style.display = 'none';
@@ -214,16 +238,25 @@ function end2(){
     document.getElementById('description').style.opacity = 0;
     setTimeout(function(){
         document.getElementById('description').style.opacity = 1; 
-        document.getElementById('description').innerHTML = "<p class = 'fade' id =1>This game was inspired by House of Asterion by Jorge Luis Borges, Grendel by John Gardner, and the writings of Shane Moring</p><p class = 'fade' id =2>The maze was generated with Prim's Spanning Tree Algorithm. The Minotaur's keen hearing was simulated using Dijkstra's Shortest Path Algorithm. Coincidentally, 40 years ago my dad worked on a wireless radio project for the United States military that used the same algorithm</p>";
-        revealIntro(1,2)
+        document.getElementById('description').innerHTML = "<p class = 'fade' id =1>This game was inspired by House of Asterion by Jorge Luis Borges, Grendel by John Gardner, and the writings of Shane Moring</p><p class = 'fade' id =2>The maze was generated with Prim's Spanning Tree Algorithm. The Minotaur's keen hearing was simulated using Dijkstra's Shortest Path Algorithm. Coincidentally, 40 years ago my dad worked on a wireless radio project for the United States military that used the same algorithm</p><p class='fade' id =3><input type='button' value = 'PLAY AGAIN' onclick='delayStart()'></p>";
+        revealIntro(1,3)
         //document.getElementById('text').style.opacity = 1;
         //document.getElementById('controls').style.display = 'none';
-    }, 2000)
+    }, 1000*fadeModifier)
+}
+function delayStart(){
+    document.getElementById('text').style.opacity = 0;
+    setTimeout(function(){
+        document.getElementById('seedChoice').style.display='block';
+        document.getElementById('seedChoice').style.opacity=0;
+    }, 1000*fadeModifier);
+  
+    setTimeout(function(){start()}, 2000*fadeModifier);
 }
 
 function delayCharacterMove (destination){
     document.getElementById('text').style.opacity=0;
-     setTimeout(function(){ characterMove(destination); }, 1500*fadeModifier);
+     setTimeout(function(){ characterMove(destination); document.getElementById('text').style.opacity=1;}, 1500*fadeModifier);
 }
 
 
@@ -241,9 +274,10 @@ function characterMove(destination){
 }
 function ascend(){
     foundExit = true;
+    if (currentCharacter == Minotaur){
     document.getElementById('ascend').style.display="inline";
     document.getElementById('ascend').setAttribute("onClick",`ascendTwo()`)
-    document.getElementById('ascend').value = 'ASCEND';
+    document.getElementById('ascend').value = 'ASCEND';}
 }
 function ascendTwo(){
     document.getElementById('text').style.opacity=0;
@@ -257,7 +291,6 @@ function ascendTwo(){
                     cNodes[i].style.display="none"
                 }
             }
-        console.log('a2')
         document.getElementById('ascend').value = 'KEEP GOING';
         document.getElementById('description').innerHTML = "<p>You exit the labyrinth. You've never been here before. It's so bright it's blinding at first. The red string was leading you to freedom all along. </p><p>You run, first on four limbs, then two, out onto the grassy hills of your country.</p>";
         document.getElementById('ascend').setAttribute("onClick",`ascendThree()`)
@@ -304,18 +337,25 @@ function ascendGoBack(){
     setTimeout(function(){ 
           document.getElementById('ascend').value = 'CONTINUE';
     document.getElementById('goback').style.display = 'none';
-document.getElementById('ascend').setAttribute("onClick",`delayDisplayOptions(Minotaur.location)`)
+document.getElementById('ascend').setAttribute("onClick",`delayDisplayOptions(currentCharacter.location)`)
     document.getElementById('description').innerHTML = "You slow to a jog and then to a walk. Something doesn't feel right.  In a different life it might have been yours. You turn back to the labyrinth";
         document.getElementById('text').style.opacity=1;
     }, 1500*fadeModifier);
 }
 
 function displayFirstOptions(){
-    document.getElementById('controls').style.display = 'inline';
+
+    
     document.getElementById('description').opacity = 0;
     document.getElementById('text').style.opacity=0;
-    document.getElementById('controls').style.opacity=0;
+    //document.getElementById('controls').style.opacity=0;
     setTimeout(function(){
+        document.getElementById('controls').style.display = 'block';
+            document.getElementById('inventory').style.display = 'block';
+    document.getElementById('inventory').innerHTML = '<p>INVENTORY: NONE</p>';
+    if(currentCharacter==Theseus){
+    document.getElementById('inventory').innerHTML = '<p>INVENTORY: BRONZE SWORD, RED THREAD</p>';
+    }
         displayOptions(currentCharacter.location); document.getElementById('description').style.opacity = 1; 
         document.getElementById('text').style.opacity = 1;
         document.getElementById('controls').style.opacity=1;
@@ -326,7 +366,8 @@ function displayFirstOptions(){
 
 function displayOptions(origin){
     writeRedThread(origin);
-    
+    console.log('origin')
+    console.log(origin)
     let closerNode;
     if (findPath(opposingCharacter.location,origin).length==0){
         closerNode = opposingCharacter.location
@@ -373,7 +414,7 @@ function writeRedThread(origin){
     document.getElementById('redThread').innerHTML='';
     let redThread = [];
     if (listWithinList(origin,Theseus.alreadyVisited)){
-        for(let i =0;i<Theseus.alreadyVisited.length;i++){
+        for(let i =0;i<Theseus.alreadyVisited.length-1;i++){
             if (checkListEquality(origin,Theseus.alreadyVisited[i])){
                 let cLeftRight = []
                 if (Theseus.alreadyVisited[i+1]!=undefined){
@@ -409,11 +450,11 @@ function writeRedThread(origin){
             }
             if(redThread[i].length==1){
                 if(foundExit){
-                    textNode+="red thread leading to the secret door."
+                    textNode+=`red thread leading from ${redThread[i][0]} to the secret door.`
                       //document.getElementById('redThread').innerHTML+="red thread leading to the secret door.</p>"
                 }
                 else{
-                    textNode+="the end of the red thread curls off into a dark shadow. On further inspection you realize the wall isn't what it seems. The red thread leads to a pseudothyrum. When you open it, you see a narrow, winding set of stairs leading to the unknown."
+                    textNode+=`the red thread coming from ${redThread[i][0]} curling off into a dark shadow. On further inspection you realize the wall isn't what it seems. The red thread leads to a pseudothyrum. When you open it, you see a narrow, winding set of stairs leading up to the unknown.`
                    //document.getElementById('redThread').innerHTML+="the end of the red thread curls off into a dark shadow. On further inspection you realize the wall isn't what it seems. The red thread leads to a pseudothyrum.</p> <p> When you open it, you see a narrow, winding set of stairs leading to the unknown.</p>"  
                 }
             }
@@ -445,4 +486,15 @@ function east(){
     document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Boreas, the North Wind. </p><p> On it is inscribed: 'Let him possess wild mountain crags, thy favored haunt and home, O Eurus! In his barbarous mansion there, let Aeolus look proud, and play the king in yon close-bounded prison-house of storms!”'</p>"}
 function south(){
     document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Notus, the South Wind. </p><p> On it is inscribed: '...But make all haste you can to return home again and do not wait till the time of the new wine and autumn rain and oncoming storms with the fierce gales of Notus who accompanies the heavy autumn rain of Zeus and stirs up the sea and makes the deep dangerous.'</p>"}
+
+function revealIntro(i,b){
+    document.getElementById(i).style.opacity=1;
+    i+=1
+    if (i>b){
+        return
+    }
+    else{
+        setTimeout(function(){ revealIntro(i,b); }, 2000*fadeModifier);
+    }
+}
 

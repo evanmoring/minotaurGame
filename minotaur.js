@@ -1,22 +1,44 @@
-var height = 23;
-var width = 23;
+var height = 21;
+var width = 21;
 var grid = [];
 var startLocation;
 var currentLocation;
 var nodeAttributes =[[]]  // [[yCoor of first option,xCoor of next option],distance];
-var gridDiv= [];
+var gridDiv;
 var wallList;
 var horizontalNodeDistance = 2;
 var verticalNodeDistance = 2;
 
+function start(){
+    
+
+    document.getElementById('seedChoice').style.opacity=1;
+    if(debug){
+        document.getElementById('masterGrid').style.display = 'block';
+    }
+    
+
+}
+
+
 function chooseSeed(seed){
     
+    document.getElementById('description').style.opacity = 0;
+    document.getElementById('seedChoice').style.opacity=0;
+    setTimeout(function(){
+           document.getElementById('seedChoice').style.display='none';
+        document.getElementById('text').style.opacity = 1;
+        
     randomNumber = seed*100+99;
     generateMaze();
-    document.getElementById('seedChoice').innerHTML = 'Seed: ' +seed
+
+    }, 1000*fadeModifier)
+
+    
 }
 
 function generateMaze(){
+    grid = []
     for ( let i = 0; i < height; i ++){
         let wList = []
         for (j = 0; j < width; j++){
@@ -34,14 +56,15 @@ function generateMaze(){
         }
         grid.push(wList)
     }
-    var halfHeight = (Math.floor((height-2)/2))
-    var halfWidth = (Math.floor(((width-2)/2)))
+    let halfHeight = (Math.floor((height-2)/2))
+    let halfWidth = (Math.floor(((width-2)/2)))
     currentLocation = {height: (getRandomNumber(halfHeight)*2)+1, width:(getRandomNumber(halfWidth)*2)+1};
     grid[currentLocation.height][currentLocation.width]=2;
     wallList = [];
-    
+    console.log(wallList)
     addWalls()
-var wallListNumber = getRandomNumber(wallList.length); 
+let wallListNumber = getRandomNumber(wallList.length); 
+    console.log(wallList)
 currentLocation = wallList[wallListNumber];
 getSurroundingValues(currentLocation.width,currentLocation.height)
 
@@ -204,10 +227,15 @@ function addWalls(){
 
 
 
+var gridDivList;
 
-var gridDivList =[];
-gridDivList.fill(false,0,height)
 function load(){
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('distance').style.display = 'none';
+    gridDiv = [];
+    gridDivList =[];
+    gridDivList.fill(false,0,height)
+    document.getElementById("masterGrid").innerHTML = '';
     /*let xGridWrap = document.createElement('div');
     let xGrid = document.createElement('div');
         xGrid.innerHTML = 0 ;

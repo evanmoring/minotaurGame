@@ -6,6 +6,8 @@
 <style>
     body{
         font-family: helvetica;
+        letter-spacing: 1x;
+        line-height: 26px;
         background: #ccc;
         padding: 50px;
         text-align: center;
@@ -27,12 +29,12 @@
     }
     
     body * {
-                        /*  -webkit-transition: opacity 1s ease-in;
+                          -webkit-transition: opacity 1s ease-in;
        -moz-transition: opacity s ease-in;
         -ms-transition: opacity 1s ease-in;
          -o-transition: opacity 1s ease-in;
             transition: opacity 1s ease-in;
-        margin: 10px;*/
+        margin: 10px;
     }
     br{
         width:100%;
@@ -49,27 +51,44 @@
      
         
     }
+    .border{
+        border:10px solid
+    }
 
-    #mastergrid *{
-        margin: 0px;
+    #mastergrid {
         font-family: monospace;
-        /*display: none;*/
+        display: none;
+    }
+     #mastergrid *{
+        margin: 0px;
     }
     #controls {
         display:none;
     }
+    #inventory{
+        display:none;
+    }
+    #debugDiv{
+        display:none;
+    }
+    #seedChoice{
+        opacity:0;
+    }
 </style>
-<body onload=''>
+<body onload='start();'>
     <div id = "seedChoice">
-        Choose a 4 digit seed value. If you generate the maze twice using the same value, the maze will be identical
-    <input style="border:10px solid" id="seed" type = "text" placeholder="Enter 4 digit seed number" value = 1234>
-    <input style="border:10px solid" id="seed" type = "button" value="Choose seed" onclick="chooseSeed(parseInt(document.getElementById('seed').value))">
+        <p>Choose a 4 digit seed value. If you generate the maze twice using the same value, the maze will be identical</p>
+    <input class= "border" id="seed" type = "text" placeholder="Enter 4 digit seed number" value = 1234>
+    <input class = "border" id="seed" type = "button" value="Choose seed" onclick="chooseSeed(parseInt(document.getElementById('seed').value))">
         </div>
+    <div class = "border" id="debugDiv"></div>
     <div id ="text">
-    <div id = "distance"></div>
-    <div id ="description"></div>
-    <div id = "redThread"></div>
-    <div id="direction"></div>
-    <div id="controls"><input value='LEFT' type = "button" id='the left'><input value='RIGHT' type = "button"  id='the right'><input value='FORWARD' type = "button"  id='ahead'><input value='BACK' type = "button"  id='behind'><input value='ASCEND' type = "button"  id='ascend' onclick = 'ascendTwo()'><input value='GO BACK' type = "button"  id='goback' onclick='ascendGoBack()'></div></div>
-<div id="masterGrid"></div>
+    <p id = "distance"></p>
+    <p id ="description"></p>
+    <p id = "redThread"></p>
+    <p id="direction"></p>
+    <p id="controls"><input value='LEFT' type = "button" id='the left'><input value='RIGHT' type = "button"  id='the right'><input value='FORWARD' type = "button"  id='ahead'><input value='BACK' type = "button"  id='behind'><input value='ASCEND' type = "button"  id='ascend' onclick = 'ascendTwo()'><input value='GO BACK' type = "button"  id='goback' onclick='ascendGoBack()'></p>
+        <p id="inventory"></p>
+    </div>
+    <div id="masterGrid"><div id="gridDiv"></div></div>
     </body>
