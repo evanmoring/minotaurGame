@@ -1,5 +1,5 @@
 var height = 21;
-var width = 21;
+var width =21;
 var grid = [];
 var startLocation;
 var currentLocation;
@@ -8,6 +8,7 @@ var gridDiv;
 var wallList;
 var horizontalNodeDistance = 2;
 var verticalNodeDistance = 2;
+var nodeList;
 
 function start(){
     
@@ -61,10 +62,8 @@ function generateMaze(){
     currentLocation = {height: (getRandomNumber(halfHeight)*2)+1, width:(getRandomNumber(halfWidth)*2)+1};
     grid[currentLocation.height][currentLocation.width]=2;
     wallList = [];
-    console.log(wallList)
     addWalls()
 let wallListNumber = getRandomNumber(wallList.length); 
-    console.log(wallList)
 currentLocation = wallList[wallListNumber];
 getSurroundingValues(currentLocation.width,currentLocation.height)
 
@@ -126,13 +125,56 @@ for (let i = 0; i<height;i++){
     }
 
 }
+    
+for (i=0;i<height;i++){
+    if (i%2){
+        specialSquares.push([])
+        for (j=0;j<width;j++){
+            specialSquares[i].push(false)
+        }
+    }
+    else{
+        specialSquares.push(false);
+    }  
+}
 
 
 
+specialSquares[tStart[0]][tStart[1]]= ascend;
+specialSquares[mStart[0]][mStart[1]]= origin;
+specialSquares[Math.floor(height/2)][1]= west;
+specialSquares[Math.floor(height/2)][width-2]= east;
+specialSquares[1][Math.floor(width/2)]= north;
+specialSquares[height-2][Math.floor(width/2)]= south;
+
+
+nodeList = [];
+specialNodeList = nodeList.slice()
 getNodes()
-
-
 linkNodes()
+    populateSpecial(Talos);
+populateSpecial(Daedalus);
+    populateSpecial(androgeus);
+     populateSpecial(hercules);
+     populateSpecial(glaucusOne);
+     populateSpecial(glaucusTwo);
+     populateSpecial(glaucusThree);
+     populateSpecial(glaucusFour);
+     populateSpecial(glaucusFive);
+     populateSpecial(althaemenes);
+     populateSpecial(catreus);
+    populateSpecial(scylla);
+     populateSpecial(scyllaTwo);
+     /*populateSpecial(a);
+     populateSpecial(a);
+     populateSpecial(a);
+     populateSpecial(a);
+     populateSpecial(a);
+     populateSpecial(a);
+     populateSpecial(a);*/
+
+    
+    
 
 for (i=1;i<height;i+=2){
     for (j=1;j<width;j+=2){
@@ -168,6 +210,13 @@ function getNodes(){
             if(((cNode[1]&&cNode[0])==true)&&(((cNode[2])||cNode[3])==false)){
                 nodeAttributes[i][j]=false
                 grid[i][j]='p'
+            }
+            if (nodeAttributes[i][j]){
+                nodeList.push([i,j]);
+                if (!(specialSquares[i][j])){
+                    specialNodeList.push([i,j])
+                }
+                
             }
         }
     }}
@@ -285,4 +334,15 @@ function getDiv (list){
     y = (list[0])
     x = list[1]
     return gridDiv[y].childNodes[x];
+}
+
+function populateSpecial(func){
+    if (specialNodeList.length>0){
+        console.log('special length'+ specialNodeList.length)
+        listChoice = getRandomNumber(specialNodeList.length)
+        console.log(listChoice)
+        specialSquares[specialNodeList[listChoice][0]][specialNodeList[listChoice][1]]= func;
+        specialNodeList.splice(listChoice,1)
+         console.log('special length after '+ specialNodeList.length)
+    }
 }

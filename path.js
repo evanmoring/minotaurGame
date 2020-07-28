@@ -1,6 +1,4 @@
 function findPath(start,end){
-    console.log(start)
-    console.log(end)
     if(checkListEquality(start,end)){
         console.log("bigEND")
         return
