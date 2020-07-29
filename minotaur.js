@@ -152,26 +152,9 @@ nodeList = [];
 specialNodeList = nodeList.slice()
 getNodes()
 linkNodes()
-    populateSpecial(Talos);
-populateSpecial(Daedalus);
-    populateSpecial(androgeus);
-     populateSpecial(hercules);
-     populateSpecial(glaucusOne);
-     populateSpecial(glaucusTwo);
-     populateSpecial(glaucusThree);
-     populateSpecial(glaucusFour);
-     populateSpecial(glaucusFive);
-     populateSpecial(althaemenes);
-     populateSpecial(catreus);
-    populateSpecial(scylla);
-     populateSpecial(scyllaTwo);
-     /*populateSpecial(a);
-     populateSpecial(a);
-     populateSpecial(a);
-     populateSpecial(a);
-     populateSpecial(a);
-     populateSpecial(a);
-     populateSpecial(a);*/
+for(let i=0;i<contentList.length;i++){
+    populateSpecial(contentList[i])
+}
 
     
     
@@ -338,11 +321,8 @@ function getDiv (list){
 
 function populateSpecial(func){
     if (specialNodeList.length>0){
-        console.log('special length'+ specialNodeList.length)
         listChoice = getRandomNumber(specialNodeList.length)
-        console.log(listChoice)
         specialSquares[specialNodeList[listChoice][0]][specialNodeList[listChoice][1]]= func;
         specialNodeList.splice(listChoice,1)
-         console.log('special length after '+ specialNodeList.length)
     }
 }

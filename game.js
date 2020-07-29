@@ -5,7 +5,7 @@ var mCurrent = mStart;
 var currentFacing;
 var closerNode;
 var endCheck = false;
-const debug = true;
+const debug = false;
 var fadeModifier = 1;
 var playCount = 0;
 
@@ -149,7 +149,14 @@ function gameStart (){
 }
 
 function introduction () {
-    document.getElementById('description').innerHTML = "<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the MINOTAUR, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demanded as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>THESEUS, the son of the ruler of Athens, decides enough is enough. He offers himself as tribute and sails to Crete. As he leaves, he promises his father that should he succeed he will fly a white flag from his ship's mast.  </p><p class = 'fade' id='4'>You take the role of the prince in the Labyrinth. Travel the winding corridors until the inevitable confrontation with your foe.<br><input type='button' value = 'CONTINUE' onclick='displayFirstOptions(currentCharacter.location)'></p>"
+    let text;
+    if (currentCharacter == Minotaur){
+        text = 'prince in the labyrinth'
+    }
+    if (currentCharacter == Theseus){
+        text = 'Athenian duke'
+    }
+    document.getElementById('description').innerHTML = `<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the MINOTAUR, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demanded as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>THESEUS, the son of the ruler of Athens, decides enough is enough. He offers himself as tribute and sails to Crete. As he leaves, he promises his father that should he succeed he will fly a white flag from his ship's mast.  </p><p class = 'fade' id='4'>You take the role of the ${(text)}. Travel the winding corridors until the inevitable confrontation with your foe.<br><input type='button' value = 'CONTINUE' onclick='displayFirstOptions(currentCharacter.location)'></p>`
     document.getElementById("description").style.opacity=1;
     revealIntro(1,4)
 }
@@ -461,117 +468,6 @@ function writeRedThread(origin){
     }
 }
 
-function origin(){
-    document.getElementById('description').innerHTML += "<p>On the wall a message is inscribed: 'Draw your knowledge of the past from me and read the ancient tales of learned lore. Look neither at the page of Homer, nor of elegy, nor tragic muse, nor epic strain. Seek not the vaunted verse of the cycle; but look in me and you will find in me all that the world contains.'</p>"}
-
-function west(){
-    document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Zephyrus, the West Wind. </p><p> On it is inscribed: 'Why do you weep, Asterie,/ for the man whom the bright West Winds will restore to you at the beginning of spring?'</p>"}
-function north(){
-    document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Boreas, the North Wind. </p><p> On it is inscribed: 'Pursuing that doe he had also seen that land beyond the cold blasts of Boreas; there he had stood and marvelled at the trees, and sweet desire for them possessed him, to plant them around the boundary-line of the horse-racing ground with its twelve courses.'</p>"}
-function east(){
-    document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Boreas, the North Wind. </p><p> On it is inscribed: 'Let him possess wild mountain crags, thy favored haunt and home, O Eurus! In his barbarous mansion there, let Aeolus look proud, and play the king in yon close-bounded prison-house of storms!”'</p>"}
-function south(){
-    document.getElementById('description').innerHTML += "<p>You see bas-relief carved into the wall. It depicts Notus, the South Wind. </p><p> On it is inscribed: '...But make all haste you can to return home again and do not wait till the time of the new wine and autumn rain and oncoming storms with the fierce gales of Notus who accompanies the heavy autumn rain of Zeus and stirs up the sea and makes the deep dangerous.'</p>"}
-function Talos(){
-    if (!currentCharacter.checkIfVisited()){
-        document.getElementById('description').innerHTML += "<p>You see a grate in the ceiling. You hear a clanking echoing down the corridors. It gets louder and louder. Suddenly you see Talos step around the corridor. He is the first robot ever invented, a big bronze brute seven feet tall made by the forge God Hephaestus. He circles Crete thrice a day as a sentry, defending Minos. </p>"
-    }
-    else{
-        document.getElementById('description').innerHTML += "<p>You see the grate where you saw Talos</p>"
-    }
-}
-
-function Daedalus(){
-        if (!currentCharacter.checkIfVisited()){
-        document.getElementById('description').innerHTML += "<p>You see a grate in the ceiling. You see a shadow cast by a candle of a large pair of wings. Through the grate you hear two men talking. 'Remember my boy, when you take to flight, fly neither high, lest the glue should melt in the sun and the wings should drop off, nor near the sea, lest the pinions should be detached by the damp.' 'Yes, father, you've told me a dozen times! You think I'll disregard your injunctions?'</p>"
-    }
-    else{
-        document.getElementById('description').innerHTML += "<p>You see the grate where you saw Icarus and Daedalus</p>"}
-    }
-
-function mirror(){
-
-        document.getElementById('description').innerHTML += "<p>You see a mirror. Engraved on it is the text: Lo savio mio inver\' lui gridò: \"Forse tu credi che qui sia 'l duca d'Atene, che sú nel mondo la morte ti porse? Pártiti, bestia, ché questi non vene ammaestrato da la tua sorella, ma vassi per veder la vostre pene.\"</p>"
-    }
-
-function androgeus(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts your father slaying your half-brother in Marathon.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts your the Cretan Bull slaying your Minos' son Androgeus in Marathon. You remember hunting down and slaying the bull not long after.</p>"
-    }
-    }
-
-function hercules(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts a brutish man, Hercules, subduing your father.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts your friend, Hercules, subduing the Cretan Bull. It would later be freed and wandered to Marathon where you crossed its path</p>"
-    }
-    }
-
-function glaucusOne(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts a your brother Glaucus falling into a pot of honey and drowning.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p><p>You see a fresco on the wall. It depicts a child falling into a pot of honey and drowning.</p>"
-    }
-    }
-
-function glaucusTwo(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts a your stepfather testing the assembled diviners by making them describe the color of a cow that changes thrice a day. Polyidus bests the other diviners by describing the color as that of the mulberry as it ripens.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p><p>You see a fresco on the wall. It depicts Polyidus and some cows.</p>"
-    }
-    }
-
-function glaucusThree(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts Minos locking Polyidus in his wine-cellar with the honey cask containing Glaucus' corpse.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p><p>You see a fresco on the wall. It depicts Polyidus in a wine-cellar.</p>"
-    }
-    }
-
-function glaucusFour(){
-    if(currentCharacter==Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts Polyidus killing a snake with a sword. The snake's mate comes with a healing herb that revives the dead snake. Polyidus uses the herb to heal Glaucus.</p>"
-        }
-    if(currentCharacter==Theseus){
-        document.getElementById('description').innerHTML += "<p><p>You see a fresco on the wall. It depicts Polyidus in a wine-cellar.</p>"
-    }
-    }
-
-function glaucusFive(){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts Polyidus teaching Glaucus divination at the behest of Minos. Just before finishing Polyidus asks Glaucus to spit in his mouth, causing him to forget his training as a diviner.</p>" 
-    }
-
-function althaemenes(){
-    if(currentCharacter == Minotaur){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts your neice and nephew Althaemenes and Apemosyne fleeing to the mountain Atabyrium after an oracle predicts one of them will slay their father. Then, Althaemenes became the murderer of his sister. She fled Hermes but he spread  fresh hides on the path. She slipped on them and so was deflowered. She revealed to her brother what had happened but he didn't believe her and kicked her to death.</p>" 
-        }
-        if(currentCharacter == Theseus){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts Althaemenes and Apemosyne fleeing to the mountain Atabyrium after an oracle predicts one of them will slay their father. Then, Althaemenes became the murderer of his sister. She fled Hermes but he spread  fresh hides on the path. She slipped on them and so was deflowered. She revealed to her brother what had happened but he didn't believe her and kicked her to death.</p>" 
-        }
-    }
-
-function catreus(){
-        document.getElementById('description').innerHTML += "<p>You see a fresco on the wall. It depicts Catreus consulting an oracle and discovering one of his children will slay him. His son Althaemenes then fled to Rhodes. Much later as an old man Catreus sails to try to find his son to pass on his kingship. He stops by Rhodes and is mistaken for a pirate. Catreus tries to explain who he is but can't be heard above the barking of the dogs. Althaemenes slays him with a javelin, fulfilling the prophecy. When he realizes what he has done Althaemenes prays and is swallowed by a chasm.</p>" 
-    }
-
-function scylla(){
-        document.getElementById('description').innerHTML += "<p>And there is in legend another murderous virgin to be loathed,1 who ruined a loved one at the bidding of his foes, when, lured by Minos' gift, the Cretan necklace forged of gold, she with her dog's heart despoiled Nisus of his immortal lock as he drew breath in unsuspecting sleep.</p>" 
-    }
-
-function scyllaTwo(){
-        document.getElementById('description').innerHTML += "<p>Scylla, the daughter of Nisus, who, they say, out of love for Minos betrayed Nisaea to him and was drowned in the sea by him, and was here cast ashore by the waves and buried. </p>" 
-    }
 
 
 
