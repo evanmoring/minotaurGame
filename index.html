@@ -1,25 +1,37 @@
+<head>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<script src="animation.js"></script>
 <script src="content.js"></script>
 <script src="random.js"></script>
-<script src="minotaur.js"></script>
+<script src="maze.js"></script>
 <script src="path.js"></script>
-<script src="game.js"></script>
-
+<script src="game.js"></script></head>
 
 <style>
     body{
         font-family: helvetica;
         letter-spacing: 1x;
-        line-height: 26px;
+        line-height: 1.5em;
         background: #ccc;
         padding: 50px;
         text-align: center;
         text-transform: uppercase;
-        font-size: 16px;
+
         color: #222;
 
     }
+
+    #animation{
+        line-height: 1em;
+        display: none;
+        opacity:0;
+        font-size: 1.2vw;
+    }
+
+
     #description{
         opacity: 0;
+        display: none;
 
 
     }
@@ -27,7 +39,10 @@
         opacity:0;
     }
     p{
+        display: block;
         opacity:1;
+        font-size: 1em;
+        font-size-adjust: none !important;
     }
     
     body * {
@@ -36,6 +51,8 @@
         -ms-transition: opacity 1s ease-in;
          -o-transition: opacity 1s ease-in;
             transition: opacity 1s ease-in;
+
+
         margin: 10px;
     }
     br{
@@ -47,14 +64,19 @@
         background-color: #ccc;
         padding: 5px;
         border: none;
-        font-size: 16px;
+        font-size: 1em !important;"
+        font-size-adjust: none !important;
         color: #222;
         text-decoration: underline;
      
         
     }
     .border{
-        border:10px solid
+        border:2px solid
+    }
+    #title{
+        display:none;
+        opacity:0;"
     }
 
     #mastergrid {
@@ -75,16 +97,35 @@
     }
     #seedChoice{
         opacity:0;
+        display:none;
     }
+        
+        @media only screen and (max-width: 768px) {
+  body  {
+      padding: 20px 0px 20px 0px;
+      margin: 0px;
+    }
+      p {
+font-size-adjust: none !important;
+        font-size: 1em !important;
+    }
+    input {
+        font-size-adjust: none !important;
+        font-size: 1em !important;
+    }
+}
+   
 </style>
-<body onload='start();'>
-    <div id = "seedChoice">
+<body onload='introduction();'>
+    <div class = "border" id="debugDiv"></div>
+    <div id ="text">
+         <div id = "seedChoice">
         <p>Choose a 4 digit seed value. If you generate the maze twice using the same value, the maze will be identical</p>
     <input class= "border" id="seed" type = "text" placeholder="Enter 4 digit seed number" value = 1234>
     <input class = "border" id="seed" type = "button" value="Choose seed" onclick="chooseSeed(parseInt(document.getElementById('seed').value))">
         </div>
-    <div class = "border" id="debugDiv"></div>
-    <div id ="text">
+    <p id="title"></p>
+    <pre id='animation'></pre>
     <p id = "distance"></p>
     <p id ="description"></p>
     <p id = "redThread"></p>
