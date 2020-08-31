@@ -9,6 +9,7 @@ var debug = false;
 var fadeModifier = 1;
 var fadeTime = 1000;
 var playCount = 0;
+var initialDistance = false;
 
 class character {
   constructor(location, indicator) {
@@ -86,6 +87,7 @@ var foundExit;
 
 
 function introduction () {
+    
      endCheck = false;
     let text;
     
@@ -95,7 +97,7 @@ function introduction () {
     if ((playCount %2)==0){
         text = 'prince in the labyrinth'
     }
-    document.getElementById('description').innerHTML = `<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the MINOTAUR, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demanded as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>THESEUS, the son of the ruler of Athens, decides enough is enough. He offers himself as tribute and sails to Crete. As he leaves, he promises his father that should he succeed he will fly a white flag from his ship's mast.  </p> <div class = 'fade' id='4'><p>You take the role of the ${(text)}. Travel the winding corridors until the inevitable confrontation with your foe.</p><p><input type='button' style="font-size:1em !important;" value = 'CONTINUE' onclick='flagIntro()'></p></div>`
+    document.getElementById('description').innerHTML = `<p class = 'fade' id='1'>A long time ago a child was born to the pairing of the Queen of Crete and the ceremonial bull. The resulting creature, the MINOTAUR, was born half-bull half-man.</p><p class = 'fade' id = '2'>Embrarrassed by his cuckolding, the King of Crete conscripted his prisoner Deadulus to design a Labyrinth beneath the palace to hide the abomination. The King of Crete was cruel as he was powerful and once every seven years he demanded as tribute the seven strongest boys and seven most beautiful girls from the surrounding kingdoms. The tributes were put into the Labyrinth to sate the Minotaur's appetite</p><p class = 'fade' id = '3'>THESEUS, the son of the ruler of Athens, decides enough is enough. He offers himself as tribute and sails to Crete. As he leaves, he promises his father that should he succeed he will fly a white flag from his ship's mast.  </p> <div class = 'fade' id='4'><p>You take the role of the ${(text)}. Travel the winding corridors until the inevitable confrontation with your foe.</p><p><input type='button' style="font-size:1em !important;" value = 'CONTINUE' onclick='flagIntro();if(playCount==0){mainSound()};'></p></div>`
     reveal('description')
     revealIntro(1,4);
     //setTimeout(function(){revealIntro(1,4);},fadeTime*fadeModifier);
@@ -244,9 +246,17 @@ function checkLeftRight(origin,destination,dictChoice) {
     }
 }
 
+function resetGame(){
+    initialDistance = false;
+    bell.off()
+    percussion.off()
+    waves.off()
+}
+
 function end(){
     //if(!debug){
     if(true){
+    resetGame()
     endCheck = true;
     playCount ++
     console.log('end')
@@ -399,11 +409,45 @@ function displayFirstOptions(){
 function displayOptions(origin){
     writeRedThread(origin);
     let closerNode;
-    if (findPath(opposingCharacter.location,origin).length==0){
+    
+    let path =findPath(opposingCharacter.location,origin)
+    let distance = findDistance(opposingCharacter.location,origin,path)
+    if( initialDistance === false){
+        initialDistance = distance;
+    }
+    console.log('distance: '+distance);
+    console.log('delta: '+(distance-initialDistance));
+    if((distance-initialDistance)<((initialDistance*3/4)*-1)-1){
+        console.log('percussion on')
+        percussion.on()
+        waves.on()
+        bell.on()
+    }
+    else if((distance-initialDistance)<((initialDistance/2)*-1)-1){
+        console.log('bell.on');
+        percussion.off()
+        bell.on()
+        waves.on()
+        
+    }
+    else if((distance-initialDistance)<((initialDistance/4)*-1)-1){
+        console.log('waves.on');
+        waves.on()
+        bell.off()
+        percussion.off()
+    }
+    else{
+        console.log('all off');
+        waves.off()
+        bell.off()
+        percussion.off()
+    }
+    
+    if (path.length==0){
         closerNode = opposingCharacter.location
     }
     else{
-        closerNode =(findPath(opposingCharacter.location,origin)[0]);}
+        closerNode =(path[0]);}
         let cNodes = document.getElementById('controls').childNodes;
         for (let i=0;i<cNodes.length;i++){
             cNodes[i].style.display="none"
